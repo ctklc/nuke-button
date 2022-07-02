@@ -49,7 +49,7 @@ const LoadingContainer = styled.div`
 const Loading = forwardRef<HTMLDivElement, LoadingProps>(
   ({ color }: LoadingProps, ref) => {
     return (
-      <LoadingContainer ref={ref} color={color}>
+      <LoadingContainer ref={ref} color={color} data-testid="LoadingContainer">
         <div />
         <div />
         <div />

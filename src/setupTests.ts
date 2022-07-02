@@ -3,3 +3,9 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import fetch, { GlobalWithFetchMock } from 'jest-fetch-mock';
+
+const customGlobal = global as unknown as GlobalWithFetchMock;
+customGlobal.fetch = fetch;
+
+customGlobal.fetchMock = customGlobal.fetch;

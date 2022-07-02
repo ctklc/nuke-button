@@ -82,7 +82,7 @@ const defaults = {
   },
   error: {
     text: 'Launch Rocket',
-    tooltip: { text: 'Ignition error', bgColor: '#FF0000' }
+    tooltip: { text: 'Ignition error', bgColor: '#FF0000', displayAlways: true }
   },
   loading: {
     text: 'Launching',

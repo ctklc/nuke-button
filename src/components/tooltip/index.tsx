@@ -1,4 +1,4 @@
-import { forwardRef, PropsWithChildren } from 'react';
+import { forwardRef, PropsWithChildren, useState } from 'react';
 import styled from 'styled-components';
 
 export type TooltipProps = {
@@ -6,10 +6,15 @@ export type TooltipProps = {
   disabled?: boolean;
   bgColor?: string;
   textColor?: string;
+  displayAlways?: boolean;
 };
 
-const TooltipItem = styled.span<Pick<TooltipProps, 'bgColor' | 'textColor'>>`
-  display: none;
+type StyledTooltipItem = Pick<TooltipProps, 'bgColor' | 'textColor'> & {
+  display?: string;
+};
+
+const TooltipItem = styled.span<StyledTooltipItem>`
+  display: ${(props) => props.display};
   position: absolute;
   width: 133px;
   height: 30px;
@@ -42,19 +47,39 @@ const TooltipContainer = styled.div`
   position: relative;
   width: 133px;
   margin: 10px;
-
-  :hover > ${TooltipItem} {
-    display: block;
-  }
 `;
 
 const Tooltip = forwardRef<HTMLDivElement, PropsWithChildren<TooltipProps>>(
-  ({ children, text, disabled, bgColor = '#000', textColor = '#fff' }, ref) => {
+  (
+    {
+      children,
+      text,
+      disabled,
+      bgColor = '#000',
+      textColor = '#fff',
+      displayAlways = false
+    },
+    ref
+  ) => {
+    const [display, setDisplay] = useState('none');
+
+    const handleHover = () => setDisplay('block');
+    const handleUnhover = () => setDisplay('none');
+
     return (
-      <TooltipContainer ref={ref}>
+      <TooltipContainer
+        ref={ref}
+        data-testid="TooltipContainer"
+        onMouseOver={handleHover}
+        onMouseLeave={handleUnhover}
+      >
         {children}
         {!disabled && (
-          <TooltipItem bgColor={bgColor} color={textColor}>
+          <TooltipItem
+            bgColor={bgColor}
+            color={textColor}
+            display={displayAlways ? 'block' : display}
+          >
             {text}
           </TooltipItem>
         )}
